@@ -54,7 +54,7 @@ async function start() {
 
 
     parallel.setColor(function (d, i) {
-        if (d.data["GENERO"] === "M") {
+        if (d.data["GENERO"] === "H") {
             return "steelblue";
         } else {
             return "#cc78ab";
