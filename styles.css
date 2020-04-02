@@ -1,7 +1,32 @@
+body{
+    /*display: flex;*/
+    /*flex-direction: column;*/
+
+}
+
 #vis{
 
 }
 
 #vis2{
 
+}
+
+.barchart_container{
+
+}
+
+.visualizations{
+
+}
+
+#group{
+    width: 500px;
+    height: 500px;
+}
+
+.data-parent{
+    fill: #69b3a2;
+    stroke: whitesmoke;
+    stroke-width: 2px;
 }

@@ -8,25 +8,47 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.8.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.5.1"></script>
     <script src="libs/d3.js"></script>
-<!--    <script src="libs/vistechlib.js"></script>-->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
     <link rel="stylesheet" href="styles.css">
     <styles rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"></styles>
+    <script src="libs/bundle.js"></script>
 
 
 </head>
 <body>
     <h1>
-        Casos Confirmados no Pará
+        Casos Confirmados de corona vírus no Pará
     </h1>
+    <p>Painel sobre os casos de covid19 no Pará
+        Dados atualizados diariamente dados divulgados da Sespa Pará</p>
+    <p>data de atualização 01/04/2020</p>
 
-    <p>data de atualização 31/03/2020</p>
+    <b>municípios do Estado do Pará com casos confirmados</b>
+    <div id="group"></div>
+    <span> Tamanho dos items referêntes a idade da pessoa</span>
 
-
-    <canvas id="group" width="400px" height="200px"></canvas>
-
+    <div>
+        <svg id="my_dataviz" height=100 width=450></svg>
+    </div>
     <canvas id="vis" width="400px" height="200px"></canvas>
+
     <canvas id="vis2" width="400px" height="200px"></canvas>
+
+    <script>
+
+        // select the svg area
+        var svg = d3.select("#my_dataviz")
+
+        // Handmade legend
+        svg.append("circle").attr("cx",200).attr("cy",10).attr("r", 6).style("fill", "steelblue")
+        svg.append("circle").attr("cx",200).attr("cy",50).attr("r", 6).style("fill", "#cc78ab")
+        svg.append("text").attr("x", 220).attr("y", 10).text("Sexo Masculino").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("text").attr("x", 220).attr("y", 50).text("Sexo Feminino").style("font-size", "15px").attr("alignment-baseline","middle")
+
+    </script>
+
+
 
     <script>
 
@@ -76,6 +98,56 @@
 
             console.log(count_by_local);
 
+            parallel = new vistechlib.CirclePacking(document.getElementById("group"), {labelVAlign: "top", labelHAlign: "right"});
+            // parallel.filterByDimension(["x"]);
+            //parallel.filterByDimension(["w","r"]);
+
+            parallel.hierarchy(["LOCAL"]);
+            parallel.setSize("IDADE");
+
+
+            parallel.data(para_covid);
+
+
+            // console.log("------------data:",parallel.d[0]["x"]);
+            let colors = ["#66aa00", "#b82e2e", "#316395", "#994499", "#3b3eac","#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477"];
+
+
+
+            parallel.setColor(function (d,i) {
+                if(d.data["GENERO"]==="M"){
+                    return "steelblue";
+                }else{
+                    return "#cc78ab";
+                }
+
+            });
+
+            parallel.setInteractionMode(false);
+
+            parallel//.setLabel((d)=
+                // >{ return d.w; })
+                .redraw()
+                .on("datamouseover", function (d, i) {
+                    parallel.highlight(d,i)
+
+                    //console.log("d:",d);
+                })
+                .on("datamouseout", function (d, i) {
+                    parallel.removeHighlight(d, i);
+                    // parallel.removeComments();
+                })
+                .on("highlightstart", function (d, i) {
+                    console.log("highlightstart", this);
+                })
+                .on("dataclick", function(d,i){
+                    //  parallel.comments(event.clientX,event.clientY);
+                    // parallel.highlight(d, i);
+                    //parallel.highlight(d, i)
+
+                });
+
+
             var ctx = document.getElementById('vis').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
@@ -98,7 +170,7 @@
                             "#b3b3b3"
                         ],
                         borderColor:
-                            "#red"
+                            "#pink"
                         ,
                         borderWidth: 1
                     }]
@@ -140,6 +212,9 @@
                         data: count_by_local.map((d)=> {return d.qtd_comunidade}),
                     }],
                 },
+                borderColor:
+                    "#pink"
+                ,
                 options: {
                     tooltips: {
                         displayColors: true,
@@ -175,7 +250,6 @@
 
 
             var textnode = document.createTextNode(para_covid.length);
-            node.appendChild(textnode);
             document.getElementById("number_comfirm").appendChild(textnode);
 
         }
@@ -185,12 +259,21 @@
 
     </script>
 
+    <h3 id="number_comfirm">
+        Total de Casos Confirmados:
+    </h3>
 
-<h3 id="number_comfirm">
-    Total de Casos Confirmados:
-</h3>
+    <h4 id="number_deaths">
+        Total de Mortes: 1
+    </h4>
 
-<h4 id="number_deaths">
-    Total de Mortes</h4>
+
+
+
+<footer>
+    Desenvolvido por <a>Elvis Miranda<a/> - Código fonte disponibilizado sob licença <a>MIT</a>
+    Fonte dos dados: Secretarias de Saúde das Unidades Federativas,
+</footer>
+
 </body>
 </html>
