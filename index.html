@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Casos de Covid19 no  Pará</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.10.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.8.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.5.1"></script>
+    <script src="libs/d3.js"></script>
+<!--    <script src="libs/vistechlib.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <styles rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"></styles>
+
+
+</head>
+<body>
+    <h1>
+        Casos Confirmados no Pará
+    </h1>
+
+    <p>data de atualização 31/03/2020</p>
+
+
+    <canvas id="group" width="400px" height="200px"></canvas>
+
+    <canvas id="vis" width="400px" height="200px"></canvas>
+    <canvas id="vis2" width="400px" height="200px"></canvas>
+
+    <script>
+
+        async function read_dataset() {
+            console.log(d3);
+            const data_covid = await d3.csv("./datasets/mapeamento-casos-confirmados-no-para.csv");
+            console.log(data_covid);
+            return  data_covid;
+        }
+
+        async function start(){
+        let para_covid =  await read_dataset();
+        console.log(para_covid);
+
+
+            let data_local = para_covid.map((d,i)=>{
+                return d.LOCAL;
+            });
+
+            data_local = [...new Set(data_local)];
+
+            let count_by_local = [];
+
+            for (let i = 0; i < data_local.length ; i++) {
+                let comunitario=0, importado=0, local = 0;
+                let count  = 0;
+                let status_local;
+                for (let j = 0; j <para_covid.length ; j++) {
+                    console.log(para_covid[j].LOCAL);
+                    if(data_local[i] === para_covid[j].LOCAL){
+                        if(status_local = para_covid[j].STATUS==="IMPORTADO"){
+                            importado++;
+                        }
+                        else if(status_local = para_covid[j].STATUS==="LOCAL"){
+                            local++;
+                        }
+                        else if(status_local = para_covid[j].STATUS==="COMUNITARIA"){
+                            comunitario++;
+                        }
+                        count+=1;
+                    }
+
+                }
+                count_by_local .push({"LOCAL":data_local[i],"QTD":count,"qtd_importado":importado,"qtd_local":local,"qtd_comunidade":comunitario});
+
+            }
+
+            console.log(count_by_local);
+
+            var ctx = document.getElementById('vis').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                responsive:true,
+                data: {
+                    labels: data_local,
+                    datasets: [{
+                        label:[
+                            "numero de casos",
+                        ],
+                        data: count_by_local.map((d)=> {return d.QTD}),
+                        backgroundColor: [
+                            '#66c2a5',
+                            '#fc8d62',
+                            '#8da0cb',
+                            '#e78ac3',
+                            '#a6d854',
+                            '#ffd92f',
+                            "#e5c494",
+                            "#b3b3b3"
+                        ],
+                        borderColor:
+                            "#red"
+                        ,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'Custom Chart Title'
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                },
+
+            });
+            //
+            console.log("data local:",data_local);
+
+            var ctx_2 = document.getElementById("vis2").getContext('2d');
+            var myChart_2 = new Chart(ctx_2, {
+                type: 'bar',
+                data: {
+                    labels:data_local,
+                    datasets: [{
+                        label: 'casos de contaminação local',
+                        backgroundColor: "#e15759",
+                        data: count_by_local.map((d)=> {return d.qtd_importado}),
+                    }, {
+                        label: 'casos de viagem do exterior',
+                        backgroundColor: "#bc80bd",
+                        data: count_by_local.map((d)=> {return d.qtd_local}),
+                    }, {
+                        label: 'comunitário',
+                        backgroundColor: "#edc949",
+                        data: count_by_local.map((d)=> {return d.qtd_comunidade}),
+                    }],
+                },
+                options: {
+                    tooltips: {
+                        displayColors: true,
+                        callbacks:{
+                            mode: 'x',
+                        },
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            gridLines: {
+                                display: false,
+                            }
+                        }],
+                        yAxes: [{
+                            stacked: true,
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                            type: 'linear',
+                        }]
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { position: 'top' },
+                }
+            });
+
+            myChart.canvas.parentNode.style.height = '250px';
+            myChart.canvas.parentNode.style.width = '500px';
+            myChart_2.canvas.parentNode.style.height = '250px';
+            myChart_2.canvas.parentNode.style.width = '500px';
+
+
+            var textnode = document.createTextNode(para_covid.length);
+            node.appendChild(textnode);
+            document.getElementById("number_comfirm").appendChild(textnode);
+
+        }
+
+
+        start();
+
+    </script>
+
+
+<h3 id="number_comfirm">
+    Total de Casos Confirmados:
+</h3>
+
+<h4 id="number_deaths">
+    Total de Mortes</h4>
+</body>
+</html>
