@@ -81,7 +81,7 @@ async function start() {
             text_details.setAttribute("id", "text_details");
             let node_text = document.createTextNode(
                 "idade:" + d.data.IDADE + "/" +
-                "SEXO:" + d.data.GENERO + "/" +
+                "sexo:" + d.data.GENERO + "/" +
                 "local:" + d.data.LOCAL + "/" +
                 "status:" + d.data.STATUS);
 
