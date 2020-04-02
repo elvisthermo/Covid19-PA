@@ -1,279 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Casos de Covid19 no  Pará</title>
-    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega@5.10.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.8.1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.5.1"></script>
+    <title>Casos de Covid19 no Pará</title>
     <script src="libs/d3.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <styles rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"></styles>
+    <script src="libs/Charts.js"></script>
     <script src="libs/bundle.js"></script>
 
-
 </head>
-<body>
-    <h1>
-        Casos Confirmados de corona vírus no Pará
-    </h1>
-    <p>Painel sobre os casos de covid19 no Pará
-        Dados atualizados diariamente dados divulgados da Sespa Pará</p>
-    <p>data de atualização 01/04/2020</p>
 
-    <b>municípios do Estado do Pará com casos confirmados</b>
-    <div id="group"></div>
-    <span> Tamanho dos items referêntes a idade da pessoa</span>
+<body>
+
+    <header>
+        <h1> Casos Confirmados de COVID19 no Pará</h1>
+    </header>
+
+    <p>Painel sobre os casos de coronavirus no Pará Dados atualizados diariamente,dados divulgados da Sespa Pará</p>
 
     <div>
-        <svg id="my_dataviz" height=100 width=450></svg>
+        <p id="number_comfirm">
+            <b>Total de Casos Confirmados:</b>
+        </p>
+        <p id="number_deaths">
+            <b>Total de Mortes: 1</b>
+        </p>
+        <p>data de atualização 01/04/2020</p>
     </div>
-    <canvas id="vis" width="400px" height="200px"></canvas>
 
-    <canvas id="vis2" width="400px" height="200px"></canvas>
+    <p class="title">municípios do Estado do Pará com casos confirmados</p>
+    <div id="group"></div>
+
+    <div>
+        <svg id="my_dataviz" height=100 width="100%"></svg>
+    </div>
+
+    <canvas id="vis1"></canvas>
+    <canvas id="vis2"></canvas>
+
+
 
     <script>
-
         // select the svg area
         var svg = d3.select("#my_dataviz")
 
-        // Handmade legend
-        svg.append("circle").attr("cx",200).attr("cy",10).attr("r", 6).style("fill", "steelblue")
-        svg.append("circle").attr("cx",200).attr("cy",50).attr("r", 6).style("fill", "#cc78ab")
-        svg.append("text").attr("x", 220).attr("y", 10).text("Sexo Masculino").style("font-size", "15px").attr("alignment-baseline","middle")
-        svg.append("text").attr("x", 220).attr("y", 50).text("Sexo Feminino").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("circle").attr("cx", 200).attr("cy", 30).attr("r", 6).style("fill", "steelblue")
+        svg.append("circle").attr("cx", 200).attr("cy", 50).attr("r", 6).style("fill", "#cc78ab")
+        svg.append("text").attr("x", 220).attr("y", 30).text("Sexo Masculino").style("font-size", "15px").attr("alignment-baseline", "middle")
+        svg.append("text").attr("x", 220).attr("y", 50).text("Sexo Feminino").style("font-size", "15px").attr("alignment-baseline", "middle")
+        svg.append("text").attr("x", 220).attr("y", 70).text("Tamanho dos items referêntes a idade da pessoa").style("font-size", "15px").attr("alignment-baseline", "middle")
 
     </script>
 
 
 
-    <script>
+    <div id="legend" style="display: none">
+        <p id="details"></p>
+    </div>
 
-        async function read_dataset() {
-            console.log(d3);
-            const data_covid = await d3.csv("./datasets/mapeamento-casos-confirmados-no-para.csv");
-            console.log(data_covid);
-            return  data_covid;
-        }
+    <script src="js/main.js"></script>
 
-        async function start(){
-        let para_covid =  await read_dataset();
-        console.log(para_covid);
-
-
-            let data_local = para_covid.map((d,i)=>{
-                return d.LOCAL;
-            });
-
-            data_local = [...new Set(data_local)];
-
-            let count_by_local = [];
-
-            for (let i = 0; i < data_local.length ; i++) {
-                let comunitario=0, importado=0, local = 0;
-                let count  = 0;
-                let status_local;
-                for (let j = 0; j <para_covid.length ; j++) {
-                    console.log(para_covid[j].LOCAL);
-                    if(data_local[i] === para_covid[j].LOCAL){
-                        if(status_local = para_covid[j].STATUS==="IMPORTADO"){
-                            importado++;
-                        }
-                        else if(status_local = para_covid[j].STATUS==="LOCAL"){
-                            local++;
-                        }
-                        else if(status_local = para_covid[j].STATUS==="COMUNITARIA"){
-                            comunitario++;
-                        }
-                        count+=1;
-                    }
-
-                }
-                count_by_local .push({"LOCAL":data_local[i],"QTD":count,"qtd_importado":importado,"qtd_local":local,"qtd_comunidade":comunitario});
-
-            }
-
-            console.log(count_by_local);
-
-            parallel = new vistechlib.CirclePacking(document.getElementById("group"), {labelVAlign: "top", labelHAlign: "right"});
-            // parallel.filterByDimension(["x"]);
-            //parallel.filterByDimension(["w","r"]);
-
-            parallel.hierarchy(["LOCAL"]);
-            parallel.setSize("IDADE");
-
-
-            parallel.data(para_covid);
-
-
-            // console.log("------------data:",parallel.d[0]["x"]);
-            let colors = ["#66aa00", "#b82e2e", "#316395", "#994499", "#3b3eac","#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477"];
-
-
-
-            parallel.setColor(function (d,i) {
-                if(d.data["GENERO"]==="M"){
-                    return "steelblue";
-                }else{
-                    return "#cc78ab";
-                }
-
-            });
-
-            parallel.setInteractionMode(false);
-
-            parallel//.setLabel((d)=
-                // >{ return d.w; })
-                .redraw()
-                .on("datamouseover", function (d, i) {
-                    parallel.highlight(d,i)
-
-                    //console.log("d:",d);
-                })
-                .on("datamouseout", function (d, i) {
-                    parallel.removeHighlight(d, i);
-                    // parallel.removeComments();
-                })
-                .on("highlightstart", function (d, i) {
-                    console.log("highlightstart", this);
-                })
-                .on("dataclick", function(d,i){
-                    //  parallel.comments(event.clientX,event.clientY);
-                    // parallel.highlight(d, i);
-                    //parallel.highlight(d, i)
-
-                });
-
-
-            var ctx = document.getElementById('vis').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                responsive:true,
-                data: {
-                    labels: data_local,
-                    datasets: [{
-                        label:[
-                            "numero de casos",
-                        ],
-                        data: count_by_local.map((d)=> {return d.QTD}),
-                        backgroundColor: [
-                            '#66c2a5',
-                            '#fc8d62',
-                            '#8da0cb',
-                            '#e78ac3',
-                            '#a6d854',
-                            '#ffd92f',
-                            "#e5c494",
-                            "#b3b3b3"
-                        ],
-                        borderColor:
-                            "#pink"
-                        ,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    title: {
-                        display: false,
-                        text: 'Custom Chart Title'
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                },
-
-            });
-            //
-            console.log("data local:",data_local);
-
-            var ctx_2 = document.getElementById("vis2").getContext('2d');
-            var myChart_2 = new Chart(ctx_2, {
-                type: 'bar',
-                data: {
-                    labels:data_local,
-                    datasets: [{
-                        label: 'casos de contaminação local',
-                        backgroundColor: "#e15759",
-                        data: count_by_local.map((d)=> {return d.qtd_importado}),
-                    }, {
-                        label: 'casos de viagem do exterior',
-                        backgroundColor: "#bc80bd",
-                        data: count_by_local.map((d)=> {return d.qtd_local}),
-                    }, {
-                        label: 'comunitário',
-                        backgroundColor: "#edc949",
-                        data: count_by_local.map((d)=> {return d.qtd_comunidade}),
-                    }],
-                },
-                borderColor:
-                    "#pink"
-                ,
-                options: {
-                    tooltips: {
-                        displayColors: true,
-                        callbacks:{
-                            mode: 'x',
-                        },
-                    },
-                    scales: {
-                        xAxes: [{
-                            stacked: true,
-                            gridLines: {
-                                display: false,
-                            }
-                        }],
-                        yAxes: [{
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                            type: 'linear',
-                        }]
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    legend: { position: 'top' },
-                }
-            });
-
-            myChart.canvas.parentNode.style.height = '250px';
-            myChart.canvas.parentNode.style.width = '500px';
-            myChart_2.canvas.parentNode.style.height = '250px';
-            myChart_2.canvas.parentNode.style.width = '500px';
-
-
-            var textnode = document.createTextNode(para_covid.length);
-            document.getElementById("number_comfirm").appendChild(textnode);
-
-        }
-
-
-        start();
-
-    </script>
-
-    <h3 id="number_comfirm">
-        Total de Casos Confirmados:
-    </h3>
-
-    <h4 id="number_deaths">
-        Total de Mortes: 1
-    </h4>
-
-
-
-
-<footer>
-    Desenvolvido por <a>Elvis Miranda<a/> - Código fonte disponibilizado sob licença <a>MIT</a>
-    Fonte dos dados: Secretarias de Saúde das Unidades Federativas,
-</footer>
+    <footer>
+        Desenvolvido por
+        <a href="https://github.com/elvisthermo"> Elvis Miranda </a>
+        - Código fonte disponibilizado sob licença <a href=""> MIT </a>
+        Fonte dos dados: <a href="http://www.saude.pa.gov.br/"> Sespa Pará </a>
+    </footer>
 
 </body>
+
 </html>
