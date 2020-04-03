@@ -8,7 +8,6 @@ async function start() {
     let para_covid = await read_dataset();
 
 
-
     let data_local = para_covid.map((d, i) => {
         return d.LOCAL;
     });
@@ -40,20 +39,20 @@ async function start() {
 
     }
 
-    parallel = new vistechlib.CirclePacking(document.getElementById("group"), { labelVAlign: "top", labelHAlign: "right" });
+    circle_packing = new vistechlib.CirclePacking(document.getElementById("group"), { labelVAlign: "top", labelHAlign: "right" });
 
 
-    parallel.hierarchy(["LOCAL"]);
-    parallel.setSize("IDADE");
+    circle_packing.hierarchy(["LOCAL"]);
+    circle_packing.setSize("IDADE");
 
 
-    parallel.data(para_covid);
+    circle_packing.data(para_covid);
 
     let colors = ["#66aa00", "#b82e2e", "#316395", "#994499", "#3b3eac", "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477"];
 
 
 
-    parallel.setColor(function (d, i) {
+    circle_packing.setColor(function (d, i) {
         if (d.data["GENERO"] === "H") {
             return "steelblue";
         } else {
@@ -62,12 +61,12 @@ async function start() {
 
     });
 
-    parallel.setInteractionMode(false);
+    circle_packing.setInteractionMode(false);
 
-    parallel
+    circle_packing
         .redraw()
         .on("datamouseover", function (d, i) {
-            parallel.highlight(d, i);
+            circle_packing.highlight(d, i);
 
             let x = event.clientX + window.scrollX;
             let y = event.clientY + window.scrollY;
@@ -91,7 +90,7 @@ async function start() {
 
         })
         .on("datamouseout", function (d, i) {
-            parallel.removeHighlight(d, i);
+            circle_packing.removeHighlight(d, i);
 
             document.getElementById("legend").style.display = "none";
             let elemet = document.getElementById("text_details");
@@ -199,10 +198,23 @@ async function start() {
         }
     });
 
+    let maxDate = 0;
+    para_covid.map(d => {
+        if(moment(d.DATA) > maxDate){
+            maxDate = moment(d.DATA);
+        }
+    });
+
+    let date = document.getElementById("update_date");
+
+    date.innerText = "Data de atualização:"+maxDate._i;
+
+
+
     myChart.canvas.parentNode.style.height = '250px';
     myChart_2.canvas.parentNode.style.height = '250px';
     // myChart.canvas.parentNode.style.width = '500px';
-    // myChart_2.canvas.parentNode.style.width = '500px';
+    // myChart_2.canvas.parentNode.style.width = '500p,x';
 
 
     let textnode = document.createTextNode(para_covid.length);
