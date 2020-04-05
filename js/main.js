@@ -122,7 +122,7 @@ async function start() {
 
             "encoding": {
                 "color": {"value": "#e15759"},
-                "y": {"field": "LOCAL", "type": "ordinal", "sort": "-x"},
+                "y": {"field": "LOCAL", "type": "ordinal", "sort": "ascending"},
                 "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative", "scale": {"padding": 10}}
             },
             "config": {
@@ -158,7 +158,7 @@ async function start() {
 
         "encoding": {
             "color": {"field": "STATUS", "scale": {"scheme": "set2"}},
-            "y": {"field": "LOCAL", "type": "ordinal", "sort": "-x"},
+            "y": {"field": "LOCAL", "type": "ordinal", "sort": "ascending"},
             "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"},
         },
         "config": {
