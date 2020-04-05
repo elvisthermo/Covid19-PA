@@ -93,5 +93,5 @@ svg text{
 }
 
 .vega-embed summary{
-    display: none;
+    /*display: none;*/
 }
