@@ -272,7 +272,7 @@ async function start() {
 function faixa_etaria(data) {
     let faixa_etaria_data = [];
 
-    let count_idades = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let count_idades = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].IDADE <= 9) {
