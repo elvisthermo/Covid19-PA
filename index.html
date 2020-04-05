@@ -10,6 +10,9 @@
     <script src="libs/Charts.js"></script>
     <script src="libs/bundle.js"></script>
     <script src="libs/moment.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.10.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.5.2"></script>
 
 </head>
 
@@ -38,10 +41,12 @@
         <svg id="my_dataviz" height=100 width="100%"></svg>
     </div>
 
-    <canvas id="vis1"></canvas>
-    <canvas id="vis2"></canvas>
+    <div id="vis1"></div>
+    <div id="vis2"></div>
 
-
+    <p class="title">Perfil dos casos confirmados</p>
+    <div id="vis3"></div>
+    <div id="vis4"></div>
 
     <script>
         // select the svg area
@@ -54,8 +59,6 @@
         svg.append("text").attr("x", 220).attr("y", 70).text("Tamanho dos items referêntes a idade da pessoa").style("font-size", "15px").attr("alignment-baseline", "middle")
 
     </script>
-
-
 
     <div id="legend" style="display: none">
         <p id="details"></p>

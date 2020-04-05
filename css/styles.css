@@ -3,14 +3,23 @@ body{
 
 }
 
-/*#vis{*/
+#vis1{
+    width: 90%;
+}
 
-/*}*/
+#vis2{
+    width: 90%;
+}
 
-/*#vis2{*/
+#vis3 {
+    width: 50%;
+    height:300px;
+}
 
-/*}*/
-
+#vis4{
+    width: 40%;
+    height:300px;
+}
 /*.barchart_container{*/
 
 /*}*/
@@ -43,8 +52,8 @@ body{
 
 .title{
     font-weight: bold;
-    font-size: 13px;
-    color: #797979;
+    font-size: 25px;
+    color: #2e2e2e;
     text-align: center;
     align-self: center;
 }
@@ -81,4 +90,8 @@ footer a{
 svg text{
     font-size: 10px;
 
+}
+
+.vega-embed summary{
+    display: none;
 }

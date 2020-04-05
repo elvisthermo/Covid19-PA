@@ -24,22 +24,29 @@ async function start() {
             if (data_local[i] === para_covid[j].LOCAL) {
                 if (status_local = para_covid[j].STATUS === "IMPORTADO") {
                     importado++;
-                }
-                else if (status_local = para_covid[j].STATUS === "LOCAL") {
+                } else if (status_local = para_covid[j].STATUS === "LOCAL") {
                     local++;
-                }
-                else if (status_local = para_covid[j].STATUS === "COMUNITARIA") {
+                } else if (status_local = para_covid[j].STATUS === "COMUNITARIA") {
                     comunitario++;
                 }
                 count += 1;
             }
 
         }
-        count_by_local.push({ "LOCAL": data_local[i], "QTD": count, "qtd_importado": importado, "qtd_local": local, "qtd_comunidade": comunitario });
+        count_by_local.push({
+            "LOCAL": data_local[i],
+            "QTD": count,
+            "qtd_importado": importado,
+            "qtd_local": local,
+            "qtd_comunidade": comunitario
+        });
 
     }
 
-    circle_packing = new vistechlib.CirclePacking(document.getElementById("group"), { labelVAlign: "top", labelHAlign: "right" });
+    circle_packing = new vistechlib.CirclePacking(document.getElementById("group"), {
+        labelVAlign: "top",
+        labelHAlign: "right"
+    });
 
 
     circle_packing.hierarchy(["LOCAL"]);
@@ -49,7 +56,6 @@ async function start() {
     circle_packing.data(para_covid);
 
     let colors = ["#66aa00", "#b82e2e", "#316395", "#994499", "#3b3eac", "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477"];
-
 
 
     circle_packing.setColor(function (d, i) {
@@ -98,121 +104,212 @@ async function start() {
 
         })
         .on("highlightstart", function (d, i) {
-            
+
         })
         .on("dataclick", function (d, i) {
 
         });
 
-    let ctx = document.getElementById('vis1').getContext('2d');
-    let myChart = new Chart(ctx, {
-        type: 'bar',
-        responsive: false,
-        data: {
-            labels: data_local,
-            datasets: [{
-                label: [
-                    "numero de casos",
-                ],
-                data: count_by_local.map((d) => { return d.QTD }),
-                backgroundColor:
-                    '#e15759'
-                ,
-                borderColor:
-                    "#pink"
-                ,
-                borderWidth: 1
+    console.log("aqui", count_by_local);
+
+    let barchart =
+        {
+            title: 'Casos confirmados por município do Pará',
+            width: "container",
+            data: {
+                values: para_covid
+            },
+
+            "encoding": {
+                "color": {"value": "#e15759"},
+                "y": {"field": "LOCAL", "type": "ordinal", "sort": "-x"},
+                "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative", "scale": {"padding": 10}}
+            },
+            "config": {
+                "countTitle": "QUANTIDADE DE CASO",
+                "axisX": {"titleLimit": 150},
+            },
+            "layer": [{
+                "mark": {
+                    "type": "bar",
+                    "tooltip": true
+                }
+            }, {
+                "mark": {
+                    "type": "text",
+                    "align": "left",
+                    "baseline": "botton"
+                },
+                "encoding": {
+                    "color": {"value": "black"},
+                    "text": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"}
+                }
             }]
-        },
-        options: {
-            title: {
-                display: true,
-                text: 'Quantidade de casos por municípios do Pará'
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: { position: 'top' },
-        },
+        };
 
-    });
+    vegaEmbed('#vis1', barchart);
 
-    let ctx_2 = document.getElementById("vis2").getContext('2d');
-    let myChart_2 = new Chart(ctx_2, {
-        type: 'bar',
+    let stackedbarchart = {
+        title: 'Casos confirmados por município do Pará e forma de contaminação',
+        width: "container",
         data: {
-            labels: data_local,
-            datasets: [{
-                label: 'casos de contaminação local',
-                backgroundColor: "#e15759",
-                data: count_by_local.map((d) => { return d.qtd_importado }),
-            }, {
-                label: 'casos de viagem do exterior',
-                backgroundColor: "#bc80bd",
-                data: count_by_local.map((d) => { return d.qtd_local }),
-            }, {
-                label: 'comunitário',
-                backgroundColor: "#edc949",
-                data: count_by_local.map((d) => { return d.qtd_comunidade }),
-            }],
+            values: para_covid
         },
-        borderColor:
-            "#pink"
-        ,
-        options: {
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                    gridLines: {
 
-                    }
-                }],
-                yAxes: [{
-                    stacked: true,
-                    ticks: {
-                        beginAtZero: true,
-                    },
-                    type: 'linear',
-                }]
+        "encoding": {
+            "color": {"field": "STATUS", "scale": {"scheme": "set2"}},
+            "y": {"field": "LOCAL", "type": "ordinal", "sort": "-x"},
+            "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"},
+        },
+        "config": {
+            "countTitle": "QUANTIDADE DE CASO",
+            "axisX": {"titleLimit": 150},
+        },
+        "layer": [{
+            "mark": {
+                "type": "bar",
+                "tooltip": true
+            }
+        }, {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "botton"
             },
-            title: {
-                display: true,
-                text: 'Quantidade de casos por municípios do Pará e forma de contaminação'
+            "encoding": {
+                "color": {"value": "black"},
+                "text": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"},
             },
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: { position: 'top' },
-        }
-    });
+
+        }]
+    };
+
+    vegaEmbed('#vis2', stackedbarchart);
+
+
+    let colors_genero = ["#0000ff","#ff0000"];
+
+    //PIE CHART
+    let piechart = {
+        width:"container",
+        height: "400",
+        title: 'Genero dos casos confirmados',
+        "description": "A simple pie chart with labels.",
+        "data": {
+            "values": para_covid
+        },
+        "encoding": {
+            "theta": {"field": "GENERO", "aggregate": "count", "type": "ordinal", "stack": true},
+            "color": {"field": "GENERO", "type": "nominal", "scale": {"scheme": "set2"}, "legend": null}
+        },
+        "layer": [{
+            "mark": {
+                "tooltip": true,
+                "type": "arc", "outerRadius": 150}
+        }, {
+            "mark": {"type": "text", "radius": 160},
+            "encoding": {
+                "text": {"field": "GENERO", "type": "ordinal"}
+            }
+        }],
+        "view": {"stroke": null}
+
+    }
+
+    let pieChart_data = faixa_etaria(para_covid);
+    let chart_faixa_etaria = {
+        width: "container",
+        height:300,
+        title: 'Faixa etária dos casos',
+        data: {
+            values: pieChart_data
+        },
+        "encoding": {
+             "color": {"field": "IDADE", "scale": {"scheme": "set3"}},
+            "y": {"field": "QTD", "type": "quantitative"},
+            "x": {"field": "IDADE", "type": "nominal"},
+        },
+        "layer": [{
+            "mark": {
+                "type": "bar",
+                "tooltip": true
+            }
+        }, {
+            "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "botton"
+            },
+            // "encoding": {
+            //     "color": {"value": "black"},
+            //     "text": {"field": "QTD", "type": "quantitative"},
+            // },
+
+        }]
+    }
+
+
+    vegaEmbed('#vis3', piechart);
+    vegaEmbed('#vis4', chart_faixa_etaria);
+
 
     let maxDate = 0;
     para_covid.map(d => {
-        if(moment(d.DATA) > maxDate){
+        if (moment(d.DATA) > maxDate) {
             maxDate = moment(d.DATA);
         }
     });
 
     let date = document.getElementById("update_date");
-
-    date.innerText = "Data de atualização:"+maxDate._i;
-
-
-
-    myChart.canvas.parentNode.style.height = '250px';
-    myChart_2.canvas.parentNode.style.height = '250px';
-    // myChart.canvas.parentNode.style.width = '500px';
-    // myChart_2.canvas.parentNode.style.width = '500p,x';
+    date.innerText = "Data de atualização:" + maxDate._i;
 
 
     let textnode = document.createTextNode(para_covid.length);
     document.getElementById("number_comfirm").appendChild(textnode);
 
+}
+
+function faixa_etaria(data) {
+    let faixa_etaria_data = [];
+
+    let count_idades = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].IDADE <= 9) {
+            count_idades[0] = count_idades[0] += 1;
+        } else if (data[i].IDADE <= 18) {
+            count_idades[1] = count_idades[1] += 1;
+        } else if (data[i].IDADE <= 29) {
+            count_idades[2] = count_idades[2] += 1;
+        } else if (data[i].IDADE <= 39) {
+            count_idades[3] = count_idades[3] += 1;
+        } else if (data[i].IDADE <= 49) {
+            count_idades[4] = count_idades[4] += 1;
+        } else if (data[i].IDADE <= 59) {
+            count_idades[5] = count_idades[5] += 1;
+        } else if (data[i].IDADE <= 69) {
+            count_idades[6] = count_idades[6] += 1;
+        } else if (data[i].IDADE <= 79) {
+            count_idades[7] = count_idades[7] += 1;
+        } else if (data[i].IDADE >= 80) {
+            count_idades[8] = count_idades[8] += 1;
+        }
+    }
+
+    let faixa_1 = {"IDADE": "entre 0 e 9 ", "QTD": count_idades[0]};
+    let faixa_2 = {"IDADE": "entre 10 e 18 ", "QTD": count_idades[1]};
+    let faixa_3 = {"IDADE": "entre 19 e 29 ", "QTD": count_idades[2]};
+    let faixa_4 = {"IDADE": "entre 30 e 39 ", "QTD": count_idades[3]};
+    let faixa_5 = {"IDADE": "entre 40 e 49 ", "QTD": count_idades[4]};
+    let faixa_6 = {"IDADE": "entre 50 e 59 ", "QTD": count_idades[5]};
+    let faixa_7 = {"IDADE": "entre 60 e 69 ", "QTD": count_idades[6]};
+    let faixa_8 = {"IDADE": "entre 70 e 79 ", "QTD": count_idades[7]};
+    let faixa_9 = {"IDADE": "maior que 80", "QTD": count_idades[8]};
+
+
+    faixa_etaria_data.push(faixa_1, faixa_2, faixa_3, faixa_4, faixa_5, faixa_5, faixa_6, faixa_7, faixa_8, faixa_9);
+
+    return faixa_etaria_data;
 }
 
 start();
