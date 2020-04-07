@@ -123,7 +123,7 @@ async function start() {
             "encoding": {
                 "color": {"value": "#e15759"},
                 "y": {"field": "LOCAL", "type": "ordinal", "sort": "ascending"},
-                "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative", "scale": {"padding": 10}}
+                "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"}
             },
             "config": {
                 "countTitle": "QUANTIDADE DE CASO",
