@@ -275,7 +275,7 @@ function faixa_etaria(data) {
     let count_idades = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     for (let i = 0; i < data.length; i++) {
-        if (data[i].IDADE <= 9) {
+        if (data[i].IDADE <= 9 && data[i].IDADE) {
             count_idades[0] = count_idades[0] += 1;
         } else if (data[i].IDADE <= 18) {
             count_idades[1] = count_idades[1] += 1;
