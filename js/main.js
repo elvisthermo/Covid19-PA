@@ -1,12 +1,19 @@
-async function read_dataset() {
+async function read_confirmed_cases() {
     const data_covid = await d3.csv("./datasets/mapeamento-casos-confirmados-no-para.csv");
 
     return data_covid;
 }
 
-async function start() {
-    let para_covid = await read_dataset();
+async function read_death_cases() {
+    const data_covid = await d3.csv("./datasets/mapeamento-obitos-confirmados-no-para.csv");
 
+    return data_covid;
+}
+
+async function start() {
+    let para_covid = await read_confirmed_cases();
+
+    let para_death_covid = await read_death_cases();
 
     let data_local = para_covid.map((d, i) => {
         return d.LOCAL;
@@ -216,7 +223,7 @@ async function start() {
 
     }
 
-    let pieChart_data = faixa_etaria(para_covid);
+    let pieChart_data = faixa_etaria(para_covid.filter((d)=>d.IDADE));
     let chart_faixa_etaria = {
         width: "container",
         height:300,
@@ -264,8 +271,12 @@ async function start() {
     date.innerText = "Data de atualização:" + maxDate._i;
 
 
-    let textnode = document.createTextNode(para_covid.length);
-    document.getElementById("number_comfirm").appendChild(textnode);
+    let textcomfirm = document.createTextNode(para_covid.length);
+    document.getElementById("number_comfirm").appendChild(textcomfirm);
+
+
+    let textdeath = document.createTextNode(para_death_covid.length);
+    document.getElementById("number_deaths").appendChild(textdeath);
 
 }
 
@@ -275,7 +286,7 @@ function faixa_etaria(data) {
     let count_idades = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     for (let i = 0; i < data.length; i++) {
-        if (data[i].IDADE <= 9 && data[i].IDADE) {
+        if (data[i].IDADE <= 9) {
             count_idades[0] = count_idades[0] += 1;
         } else if (data[i].IDADE <= 18) {
             count_idades[1] = count_idades[1] += 1;
