@@ -6,8 +6,6 @@
     <title>Casos de Covid19 no Pará</title>
     <script src="libs/d3.js"></script>
     <link rel="stylesheet" href="css/styles.css">
-    <styles rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"></styles>
-    <script src="libs/Charts.js"></script>
     <script src="libs/bundle.js"></script>
     <script src="libs/moment.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega@5.10.1"></script>
@@ -18,60 +16,71 @@
 
 <body>
 
-    <header>
-        <h1> Casos Confirmados de COVID19 no Pará</h1>
-    </header>
+<header>
+    <h1> Casos Confirmados de COVID19 no Pará</h1>
+</header>
 
-    <p>Painel sobre os casos de coronavirus no Pará Dados atualizados diariamente,dados divulgados da Sespa Pará</p>
+<p>Painel sobre os casos de coronavirus no Pará Dados atualizados diariamente,dados divulgados da Sespa Pará</p>
 
-    <div>
-        <p id="number_comfirm">
-            <b>Total de Casos Confirmados:</b>
-        </p>
-        <p id="number_deaths">
-            <b>Total de Mortes:</b>
-        </p>
-        <p id="update_date"> </p>
-    </div>
+<div>
+    <p id="number_comfirm">
+        <b>Total de Casos Confirmados:</b>
+    </p>
+    <p id="number_deaths">
+        <b>Total de Mortes:</b>
+    </p>
+    <p id="update_date"></p>
+</div>
 
-    <p class="title">municípios do Estado do Pará com casos confirmados</p>
-    <div id="group"></div>
+<p class="title">municípios do Estado do Pará com casos confirmados</p>
+<div id="group"></div>
 
-    <div>
-        <svg id="my_dataviz" height=100 width="100%"></svg>
-    </div>
+<div>
+    <svg id="legend_cirlce_packing" height=100 width="100%"></svg>
+</div>
 
-    <div id="vis1"></div>
-    <div id="vis2"></div>
+<div id="vis1"></div>
+<div id="vis2"></div>
 
-    <p class="title">Perfil dos casos confirmados</p>
-    <div id="vis3"></div>
-    <div id="vis4"></div>
+<p class="title">Perfil dos casos confirmados</p>
+<div id="vis3"></div>
+<div id="vis4"></div>
+<div id="vis5"></div>
+<div>
+    <svg id="legend_evolutionChart" height=100 width="100%"></svg>
+</div>
 
-    <script>
-        // select the svg area
-        var svg = d3.select("#my_dataviz")
+<script>
+    // select the svg area
+    let svg_legend_packing = d3.select("#legend_cirlce_packing")
 
-        svg.append("circle").attr("cx", 200).attr("cy", 30).attr("r", 6).style("fill", "steelblue")
-        svg.append("circle").attr("cx", 200).attr("cy", 50).attr("r", 6).style("fill", "#cc78ab")
-        svg.append("text").attr("x", 220).attr("y", 30).text("Homens").style("font-size", "15px").attr("alignment-baseline", "middle")
-        svg.append("text").attr("x", 220).attr("y", 50).text("Mulheres").style("font-size", "15px").attr("alignment-baseline", "middle")
-        svg.append("text").attr("x", 220).attr("y", 70).text("Tamanho dos items referêntes a idade da pessoa").style("font-size", "15px").attr("alignment-baseline", "middle")
+    svg_legend_packing.append("circle").attr("cx", 200).attr("cy", 30).attr("r", 6).style("fill", "steelblue")
+    svg_legend_packing.append("circle").attr("cx", 200).attr("cy", 50).attr("r", 6).style("fill", "#cc78ab")
+    svg_legend_packing.append("text").attr("x", 220).attr("y", 30).text("Homens").style("font-size", "15px").attr("alignment-baseline", "middle")
+    svg_legend_packing.append("text").attr("x", 220).attr("y", 50).text("Mulheres").style("font-size", "15px").attr("alignment-baseline", "middle")
+    svg_legend_packing.append("text").attr("x", 220).attr("y", 70).text("Tamanho dos items referêntes a idade da pessoa").style("font-size", "15px").attr("alignment-baseline", "middle")
 
-    </script>
+    let svg_legend_evolutionchart = d3.select("#legend_evolutionChart")
+    svg_legend_evolutionchart.append("circle").attr("cx", 200).attr("cy", 30).attr("r", 6).style("fill", "#994248")
+    svg_legend_evolutionchart.append("circle").attr("cx", 200).attr("cy", 50).attr("r", 6).style("fill", "#7b5c99")
+    svg_legend_evolutionchart.append("text").attr("x", 220).attr("y", 30).text("Linha quantidade total de casos").style("font-size", "15px").attr("alignment-baseline", "middle")
+    svg_legend_evolutionchart.append("text").attr("x", 220).attr("y", 50).text("Barra quantidade de novos casos no dia").style("font-size", "15px").attr("alignment-baseline", "middle")
 
-    <div id="legend" style="display: none">
-        <p id="details"></p>
-    </div>
+</script>
 
-    <script src="js/main.js"></script>
+<div id="legend" style="display: none">
+    <p id="details"></p>
+</div>
 
-    <footer>
-        Desenvolvido por
-        <a href="https://github.com/elvisthermo"> Elvis Miranda </a>
-        - Código fonte disponibilizado sob licença <a href="https://github.com/elvisthermo/Covid19-PA/blob/master/LICENSE"> MIT </a>
-        Fonte dos dados: <a href="http://www.saude.pa.gov.br/"> Sespa Pará </a>
-    </footer>
+<script src="js/main.js"></script>
+
+<footer>
+    Desenvolvido por
+    <a href="https://github.com/elvisthermo"> Elvis Miranda </a>
+    - Código fonte disponibilizado sob licença <a href="https://github.com/elvisthermo/Covid19-PA/blob/master/LICENSE">
+    MIT </a>
+    Fonte dos dados: <a href="http://www.saude.pa.gov.br/"> Sespa Pará </a>
+</footer>
 
 </body>
 
