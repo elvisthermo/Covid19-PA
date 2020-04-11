@@ -117,7 +117,6 @@ async function start() {
 
         });
 
-    console.log("aqui", count_by_local);
 
     let barchart =
         {
@@ -145,6 +144,8 @@ async function start() {
                 "mark": {
                     "type": "text",
                     "align": "left",
+
+
                     "baseline": "botton"
                 },
                 "encoding": {
@@ -194,11 +195,11 @@ async function start() {
     vegaEmbed('#vis2', stackedbarchart);
 
 
-    let colors_genero = ["#0000ff","#ff0000"];
+    let colors_genero = ["#0000ff", "#ff0000"];
 
     //PIE CHART
     let piechart = {
-        width:"container",
+        width: "container",
         height: "400",
         title: 'Genero dos casos confirmados',
         "description": "A simple pie chart with labels.",
@@ -212,7 +213,8 @@ async function start() {
         "layer": [{
             "mark": {
                 "tooltip": true,
-                "type": "arc", "outerRadius": 150}
+                "type": "arc", "outerRadius": 150
+            }
         }, {
             "mark": {"type": "text", "radius": 160},
             "encoding": {
@@ -223,16 +225,16 @@ async function start() {
 
     }
 
-    let pieChart_data = faixa_etaria(para_covid.filter((d)=>d.IDADE));
+    let pieChart_data = faixa_etaria(para_covid.filter((d) => d.IDADE));
     let chart_faixa_etaria = {
         width: "container",
-        height:300,
+        height: 300,
         title: 'Faixa etária dos casos',
         data: {
             values: pieChart_data
         },
         "encoding": {
-             "color": {"field": "IDADE", "scale": {"scheme": "set3"}},
+            "color": {"field": "IDADE", "scale": {"scheme": "set3"}},
             "y": {"field": "QTD", "type": "quantitative"},
             "x": {"field": "IDADE", "type": "nominal"},
         },
@@ -255,10 +257,60 @@ async function start() {
         }]
     }
 
+    let para_covid_line_chart = para_covid.map(d => {
+        d.DATA = moment(d.DATA, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        return d;
+    });
+
+    let lineChart = {
+        "width": "container",
+        "height": "container",
+        "title": "Evolução do numero de casos",
+        "data": {values: para_covid_line_chart},
+        "config": {
+            "countTitle": "NÚMERO DE CASOS",
+            "axisX": {"titleLimit": 80},
+            "axisY": {"titleLimit": 125}
+        },
+        "layer": [
+            {
+                "mark": {
+                    "type": "bar",
+                    "point": {
+                        "filled": false,
+                        "fill": "white"
+                    }
+                },
+                "encoding": {
+                    "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal", "title":"DATA"},
+                    "y": {"aggregate": "count", "field": "DATA", "type": "quantitative"},
+                    "color": {"value": "#7b5c99"},
+                    "tooltip": {"aggregate": "count", "field": "DATA","type": "quantitative"},
+                }
+            },
+            {
+                "mark": {
+                    "type": "line",
+                    "point": {
+                        "filled": false,
+                        "fill": "white"
+                    }
+                },
+                "encoding": {
+                    "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal"},
+                    "y": {"field": "ID_CASO", "type": "quantitative"},
+                    "tooltip": {"field":"ID_CASO","type": "quantitative"},
+                    "color": {"value": "#994248","type": "nominal"},
+                },
+            }
+            ]
+
+
+    };
 
     vegaEmbed('#vis3', piechart);
     vegaEmbed('#vis4', chart_faixa_etaria);
-
+    vegaEmbed('#vis5', lineChart);
 
     let maxDate = 0;
     para_covid.map(d => {
@@ -268,7 +320,7 @@ async function start() {
     });
 
     let date = document.getElementById("update_date");
-    date.innerText = "Data de atualização:" + maxDate._i;
+    date.innerText = "Data de atualização:" + moment(maxDate._i).format('DD/MM/YYYY');
 
 
     let textcomfirm = document.createTextNode(para_covid.length);
