@@ -133,7 +133,7 @@ async function start() {
                 "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"}
             },
             "config": {
-                "countTitle": "QUANTIDADE DE CASO",
+                "countTitle": "QUANTIDADE DE CASOS",
                 "axisX": {"titleLimit": 150},
             },
             "layer": [{
@@ -169,7 +169,7 @@ async function start() {
             "x": {"field": "LOCAL", "aggregate": "count", "type": "quantitative"},
         },
         "config": {
-            "countTitle": "QUANTIDADE DE CASO",
+            "countTitle": "QUANTIDADE DE CASOS",
             "axisX": {"titleLimit": 150},
         },
         "layer": [{
