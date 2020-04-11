@@ -269,8 +269,8 @@ async function start() {
         "data": {values: para_covid_line_chart},
         "config": {
             "countTitle": "NÚMERO DE CASOS",
-            "axisX": {"titleLimit": 100},
-            "axisY": {'title':"casos"}
+            "axisX": {"titleLimit": 80},
+            "axisY": {"titleLimit": 125}
         },
         "layer": [
             {
