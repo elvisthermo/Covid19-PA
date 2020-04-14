@@ -11,6 +11,8 @@
     <script src="libs/vega_lite_5.10.1.js"></script>
     <script src="libs/vega_lite.4.10.2.js"></script>
     <script src="libs/vega_lite.6.5.2.js"></script>
+    <script src="js/main.js"></script>
+
 
 </head>
 
@@ -32,7 +34,14 @@
     <p id="update_date"></p>
 </div>
 
-<p class="title">municípios do Estado do Pará com casos confirmados</p>
+<div>
+    <select id="options_select">
+        <option value="casos_confirmados" onclick="start_confirm()">Casos confirmados</option>
+        <option value="obitos_confirmados" onclick="start_obitos()">Óbitos confirmados</option>
+    </select>
+</div>
+
+<p id="group_title" class="title"></p>
 <div id="group"></div>
 
 <div>
@@ -72,7 +81,6 @@
     <p id="details"></p>
 </div>
 
-<script src="js/main.js"></script>
 
 <footer>
     Desenvolvido por
