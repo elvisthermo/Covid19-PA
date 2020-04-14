@@ -35,10 +35,11 @@
 </div>
 
 <div>
-    <select id="options_select">
-        <option value="casos_confirmados" onclick="start_confirm()">Casos confirmados</option>
-        <option value="obitos_confirmados" onclick="start_obitos()">Óbitos confirmados</option>
-    </select>
+    <input type="radio" id="casos_confirmados"  name="option" onclick="start_confirm()" checked>
+    <label for="casos_confirmados">Casos confirmados</label><br>
+    <input type="radio" id="obitos_confirmados"  name="option" onclick="start_obitos()">
+    <label for="obitos_confirmados">Óbitos confirmados</label><br>
+
 </div>
 
 <p id="group_title" class="title"></p>
