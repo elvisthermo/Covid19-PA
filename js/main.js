@@ -111,7 +111,6 @@ async function start_confirm(option) {
 
         })
         .on("dataclick", function (d, i) {
-
         });
 
 
