@@ -35,13 +35,13 @@
 </div>
 
 <div>
-    <select id="options_select" onchange="start_confirm('casos_confirmados')">
-        <option value="casos_confirmados" onclick="start_confirm('casos_confirmados')">Casos confirmados</option>
-        <option value="obitos_confirmados" onclick="start_obitos('obitos_confirmados')">Óbitos confirmados</option>
+    <select id="options_select">
+        <option value="casos_confirmados" onclick="start_confirm()">Casos confirmados</option>
+        <option value="obitos_confirmados" onclick="start_obitos()">Óbitos confirmados</option>
     </select>
 </div>
 
-<p class="title">municípios do Estado do Pará com casos confirmados</p>
+<p id="group_title" class="title"></p>
 <div id="group"></div>
 
 <div>

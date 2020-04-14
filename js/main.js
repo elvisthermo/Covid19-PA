@@ -11,13 +11,7 @@ async function read_death_cases() {
 }
 
 async function start_confirm(option) {
-    let selection_data_covid;
-
-    if(option==="obitos_confirmados"){
-        selection_data_covid = await read_death_cases();
-    }else if(option==="casos_confirmados"){
-        selection_data_covid = await read_confirmed_cases();
-    }
+    let selection_data_covid = await read_confirmed_cases();
 
     let data_local = selection_data_covid.map((d, i) => {
         return d.LOCAL;
@@ -320,17 +314,14 @@ async function start_confirm(option) {
     let date = document.getElementById("update_date");
     date.innerText = "Data de atualização:" + moment(maxDate._i).format('DD/MM/YYYY');
 
+    let group_title = document.getElementById("group_title");
+    group_title.innerText = "Municípios do Estado do Pará casos confirmados de covid19";
+
 }
 
-async function start_obitos(option) {
+async function start_obitos() {
 
-    let selection_data_covid;
-
-    if(option==="obitos_confirmados"){
-        selection_data_covid = await read_death_cases();
-    }else if(option==="casos_confirmados"){
-        selection_data_covid = await read_confirmed_cases();
-    }
+    let selection_data_covid = await read_death_cases();
 
     let data_local = selection_data_covid.map((d, i) => {
         return d.LOCAL;
@@ -434,7 +425,7 @@ async function start_obitos(option) {
 
     let barchart =
         {
-            title: 'Casos confirmados por município do Pará',
+            title: 'Óbitos por município do Pará',
             width: "container",
             data: {
                 values: selection_data_covid
@@ -472,7 +463,7 @@ async function start_obitos(option) {
     vegaEmbed('#vis1', barchart);
 
     let stackedbarchart = {
-        title: 'Casos confirmados por município do Pará e forma de contaminação',
+        title: 'Óbitos por município do Pará e forma de contaminação',
         width: "container",
         data: {
             values: selection_data_covid
@@ -515,7 +506,7 @@ async function start_obitos(option) {
     let piechart = {
         width: "container",
         height: "400",
-        title: 'Genero dos casos confirmados',
+        title: 'Genero dos casos óbitos',
         "description": "A simple pie chart with labels.",
         "data": {
             "values": selection_data_covid
@@ -543,7 +534,7 @@ async function start_obitos(option) {
     let chart_faixa_etaria = {
         width: "container",
         height: 300,
-        title: 'Faixa etária dos casos',
+        title: 'Faixa etária dos óbitos',
         data: {
             values: pieChart_data
         },
@@ -563,11 +554,6 @@ async function start_obitos(option) {
                 "align": "left",
                 "baseline": "botton"
             },
-            // "encoding": {
-            //     "color": {"value": "black"},
-            //     "text": {"field": "QTD", "type": "quantitative"},
-            // },
-
         }]
     }
 
@@ -579,7 +565,7 @@ async function start_obitos(option) {
     let lineChart = {
         "width": "container",
         "height": "container",
-        "title": "Evolução do numero de casos",
+        "title": "Evolução do numero de óbitos",
         "data": {values: para_covid_line_chart},
         "config": {
             "countTitle": "NÚMERO DE CASOS",
@@ -633,17 +619,17 @@ async function start_obitos(option) {
         }
     });
 
+    let date = document.getElementById("update_date");
+    date.innerText = "Data de atualização:" + moment(maxDate._i).format('DD/MM/YYYY');
 
-
+    let group_title = document.getElementById("group_title");
+    group_title.innerText = "Municípios do Estado do Pará Óbitos de Covid19";
 }
 
 async function counts_cases(){
     let para_confirm_covid = await read_confirmed_cases();
 
     let para_death_covid = await read_death_cases();
-
-    let date = document.getElementById("update_date");
-    date.innerText = "Data de atualização:" + moment(maxDate._i).format('DD/MM/YYYY');
 
     let textcomfirm = document.createTextNode(para_confirm_covid.length);
     document.getElementById("number_comfirm").appendChild(textcomfirm);
@@ -694,7 +680,9 @@ function faixa_etaria(data) {
 
     return faixa_etaria_data;
 }
+
+
 counts_cases();
-start_confirm('casos_confirmados');
+start_confirm();
 
 
