@@ -45,7 +45,7 @@ async function start_confirm(option) {
             "qtd_local": local,
             "qtd_comunidade": comunitario
         });
-
+        
     }
 
     document.getElementById("group").innerHTML = null;
