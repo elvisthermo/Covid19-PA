@@ -25877,7 +25877,7 @@ class BarChart extends Visualization{
                 .append(":title")
                 .text(text);
         }
-        n
+
     }
 
     highlight(...args){
@@ -26545,6 +26545,28 @@ class CirclePacking extends Visualization{
     }
 
     detail(...args){
+        console.log("aquil")
+        let details;
+        let dataItens = this.d_h.leaves();
+        let obj =  Object.entries(args[0].data);
+        let text = "";
+
+        for (let j = 0; j < args[2].length; j++) {
+            for (let i = 0; i < obj.length; i++) {
+                if(args[2][j]===obj[i][0]){
+                    text+= obj[i][0]+" : "+ obj[i][1]+"\n";
+                }
+            }
+        }
+
+        if(args[0] instanceof SVGElement){
+        }else if(typeof args[1] === "number" && args[1] >= 0 && args[1] < dataItens.length){
+            let d = dataItens[args[1]];
+            details = this.foreground.selectAll(`.data[data-index="${args[1]}"]`)
+                .style("stroke", this.settings.highlightColor)
+                .append(":title")
+                .text(text);
+        }
 
     }
 
@@ -29100,7 +29122,7 @@ class Treemap extends Visualization{
               .attr("height", d.y1 - d.y0)
               .style("fill","white")
               .attr("opacity",0.1)
-              .style("stroke", this.settings.highlightColorColor)
+              .style("stroke", this.settings.highlightColor)
               .append(":title")
               .text(text);
 

@@ -77,34 +77,10 @@ async function start_confirm(option) {
         .redraw()
         .on("datamouseover", function (d, i) {
             circle_packing.highlight(d, i);
-
-            let x = event.clientX + window.scrollX;
-            let y = event.clientY + window.scrollY;
-
-            document.getElementById("legend").style.display = "block";
-            document.getElementById("legend").style.left = x + "px";
-            document.getElementById("legend").style.top = y + "px";
-
-
-            let text_details = document.createElement("p");
-            text_details.setAttribute("id", "text_details");
-            let node_text = document.createTextNode(
-                "idade:" + d.data.IDADE + "/" +
-                "sexo:" + d.data.GENERO + "/" +
-                "local:" + d.data.LOCAL + "/" +
-                "status:" + d.data.STATUS);
-
-            text_details.appendChild(node_text);
-            document.getElementById("details").appendChild(text_details);
-
-
+            circle_packing.detail(d,i,["LOCAL","IDADE","STATUS","DATA"])
         })
         .on("datamouseout", function (d, i) {
             circle_packing.removeHighlight(d, i);
-
-            document.getElementById("legend").style.display = "none";
-            let elemet = document.getElementById("text_details");
-            elemet.remove();
 
         })
         .on("highlightstart", function (d, i) {
@@ -385,34 +361,11 @@ async function start_obitos() {
         .redraw()
         .on("datamouseover", function (d, i) {
             circle_packing.highlight(d, i);
-
-            let x = event.clientX + window.scrollX;
-            let y = event.clientY + window.scrollY;
-
-            document.getElementById("legend").style.display = "block";
-            document.getElementById("legend").style.left = x + "px";
-            document.getElementById("legend").style.top = y + "px";
-
-
-            let text_details = document.createElement("p");
-            text_details.setAttribute("id", "text_details");
-            let node_text = document.createTextNode(
-                "idade:" + d.data.IDADE + "/" +
-                "sexo:" + d.data.GENERO + "/" +
-                "local:" + d.data.LOCAL + "/" +
-                "status:" + d.data.STATUS);
-
-            text_details.appendChild(node_text);
-            document.getElementById("details").appendChild(text_details);
-
+            circle_packing.detail(d,i,["LOCAL","IDADE","STATUS","DATA"])
 
         })
         .on("datamouseout", function (d, i) {
             circle_packing.removeHighlight(d, i);
-
-            document.getElementById("legend").style.display = "none";
-            let elemet = document.getElementById("text_details");
-            elemet.remove();
 
         })
         .on("highlightstart", function (d, i) {
