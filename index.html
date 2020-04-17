@@ -67,8 +67,8 @@
 
     svg_legend_packing.append("circle").attr("cx", 200).attr("cy", 30).attr("r", 6).style("fill", "steelblue")
     svg_legend_packing.append("circle").attr("cx", 200).attr("cy", 50).attr("r", 6).style("fill", "#cc78ab")
-    svg_legend_packing.append("text").attr("x", 220).attr("y", 30).text("Homens").style("font-size", "15px").attr("alignment-baseline", "middle")
-    svg_legend_packing.append("text").attr("x", 220).attr("y", 50).text("Mulheres").style("font-size", "15px").attr("alignment-baseline", "middle")
+    svg_legend_packing.append("text").attr("x", 220).attr("y", 30).text("Masculino").style("font-size", "15px").attr("alignment-baseline", "middle")
+    svg_legend_packing.append("text").attr("x", 220).attr("y", 50).text("Feminino").style("font-size", "15px").attr("alignment-baseline", "middle")
     svg_legend_packing.append("text").attr("x", 220).attr("y", 70).text("Tamanho dos items referêntes a idade da pessoa").style("font-size", "15px").attr("alignment-baseline", "middle")
 
     let svg_legend_evolutionchart = d3.select("#legend_evolutionChart")
@@ -78,6 +78,10 @@
     svg_legend_evolutionchart.append("text").attr("x", 220).attr("y", 50).text("Barra quantidade de novos casos no dia").style("font-size", "15px").attr("alignment-baseline", "middle")
 
 </script>
+
+<div id="legend" style="display: none">
+    <p id="details"></p>
+</div>
 
 <footer>
     Desenvolvido por

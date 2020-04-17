@@ -45,7 +45,7 @@ async function start_confirm(option) {
             "qtd_local": local,
             "qtd_comunidade": comunitario
         });
-        
+
     }
 
     document.getElementById("group").innerHTML = null;
@@ -77,10 +77,26 @@ async function start_confirm(option) {
         .redraw()
         .on("datamouseover", function (d, i) {
             circle_packing.highlight(d, i);
-            circle_packing.detail(d,i,["LOCAL","IDADE","STATUS","DATA"])
+
+            let x = event.clientX + window.scrollX;
+            let y = event.clientY + window.scrollY;
+
+            document.getElementById("legend").style.display = "block";
+            document.getElementById("legend").style.left = x + "px";
+            document.getElementById("legend").style.top = y + "px";
+
+
+            custonTooltip("Local", d.data.LOCAL, 1);
+            custonTooltip("Idade", d.data.IDADE, 2);
+            custonTooltip("Genero", d.data.GENERO, 3);
+            custonTooltip("Status", d.data.STATUS, 4);
+
+
         })
         .on("datamouseout", function (d, i) {
             circle_packing.removeHighlight(d, i);
+
+            remove_custon_tooltip();
 
         })
         .on("highlightstart", function (d, i) {
@@ -249,10 +265,10 @@ async function start_confirm(option) {
                     }
                 },
                 "encoding": {
-                    "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal", "title":"DATA"},
+                    "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal", "title": "DATA"},
                     "y": {"aggregate": "count", "field": "DATA", "type": "quantitative"},
                     "color": {"value": "#7b5c99"},
-                    "tooltip": {"aggregate": "count", "field": "DATA","type": "quantitative"},
+                    "tooltip": {"aggregate": "count", "field": "DATA", "type": "quantitative"},
                 }
             },
             {
@@ -266,11 +282,11 @@ async function start_confirm(option) {
                 "encoding": {
                     "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal"},
                     "y": {"field": "ID_CASO", "type": "quantitative"},
-                    "tooltip": {"field":"ID_CASO","type": "quantitative"},
-                    "color": {"value": "#994248","type": "nominal"},
+                    "tooltip": {"field": "ID_CASO", "type": "quantitative"},
+                    "color": {"value": "#994248", "type": "nominal"},
                 },
             }
-            ]
+        ]
 
 
     };
@@ -361,12 +377,23 @@ async function start_obitos() {
         .redraw()
         .on("datamouseover", function (d, i) {
             circle_packing.highlight(d, i);
-            circle_packing.detail(d,i,["LOCAL","IDADE","STATUS","DATA"])
 
+            let x = event.clientX + window.scrollX;
+            let y = event.clientY + window.scrollY;
+
+            document.getElementById("legend").style.display = "block";
+            document.getElementById("legend").style.left = x + "px";
+            document.getElementById("legend").style.top = y + "px";
+
+            custonTooltip("Local", d.data.LOCAL, 1);
+            custonTooltip("Idade", d.data.IDADE, 2);
+            custonTooltip("Genero", d.data.GENERO, 3);
+            custonTooltip("Status", d.data.STATUS, 4);
         })
         .on("datamouseout", function (d, i) {
             circle_packing.removeHighlight(d, i);
 
+            remove_custon_tooltip();
         })
         .on("highlightstart", function (d, i) {
 
@@ -534,10 +561,10 @@ async function start_obitos() {
                     }
                 },
                 "encoding": {
-                    "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal", "title":"DATA"},
+                    "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal", "title": "DATA"},
                     "y": {"aggregate": "count", "field": "DATA", "type": "quantitative"},
                     "color": {"value": "#7b5c99"},
-                    "tooltip": {"aggregate": "count", "field": "DATA","type": "quantitative"},
+                    "tooltip": {"aggregate": "count", "field": "DATA", "type": "quantitative"},
                 }
             },
             {
@@ -551,8 +578,8 @@ async function start_obitos() {
                 "encoding": {
                     "x": {"timeUnit": "yearmonthdate", "field": "DATA", "type": "temporal"},
                     "y": {"field": "ID_CASO", "type": "quantitative"},
-                    "tooltip": {"field":"ID_CASO","type": "quantitative"},
-                    "color": {"value": "#994248","type": "nominal"},
+                    "tooltip": {"field": "ID_CASO", "type": "quantitative"},
+                    "color": {"value": "#994248", "type": "nominal"},
                 },
             }
         ]
@@ -578,7 +605,7 @@ async function start_obitos() {
     group_title.innerText = "Municípios do Estado do Pará Óbitos de Covid19";
 }
 
-async function counts_cases(){
+async function counts_cases() {
     let para_confirm_covid = await read_confirmed_cases();
 
     let para_death_covid = await read_death_cases();
@@ -633,6 +660,33 @@ function faixa_etaria(data) {
     return faixa_etaria_data;
 }
 
+function custonTooltip(label, value, index) {
+    if(value === 'M'){
+        value = "FEMININO";
+    }
+    if(value==="H"){
+        value = "MASCULINO";
+    }
+
+    let text_details = document.createElement("p");
+    text_details.setAttribute("id", "text_details_" + index);
+
+    let node_text = document.createTextNode(label + " : " + value);
+    text_details.appendChild(node_text);
+    document.getElementById("details").appendChild(text_details);
+}
+
+function remove_custon_tooltip() {
+    document.getElementById("legend").style.display = "none";
+    let elemet_1 = document.getElementById("text_details_1");
+    elemet_1.remove();
+    let elemet_2 = document.getElementById("text_details_2");
+    elemet_2.remove();
+    let elemet_3 = document.getElementById("text_details_3");
+    elemet_3.remove();
+    let elemet_4 = document.getElementById("text_details_4");
+    elemet_4.remove();
+}
 
 counts_cases();
 start_confirm();
