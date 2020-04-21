@@ -188,7 +188,7 @@ async function start_confirm(option) {
     //PIE CHART
     let piechart = {
         width: "container",
-        height: "400",
+        height: "container",
         title: 'Genero dos casos confirmados',
         "description": "A simple pie chart with labels.",
         "data": {
@@ -216,7 +216,7 @@ async function start_confirm(option) {
     let pieChart_data = faixa_etaria(selection_data_covid.filter((d) => d.IDADE));
     let chart_faixa_etaria = {
         width: "container",
-        height: 300,
+        height: "container",
         title: 'Faixa etária dos casos',
         data: {
             values: pieChart_data
@@ -442,7 +442,7 @@ async function start_obitos() {
     vegaEmbed('#vis1', barchart);
 
     let stackedbarchart = {
-        height:500,
+        width: "container",
         title: 'Óbitos por município do Pará e forma de contaminação',
         data: {
             values: selection_data_covid
@@ -484,7 +484,7 @@ async function start_obitos() {
     //PIE CHART
     let piechart = {
         width: "container",
-        height: "400",
+        height: "container",
         title: 'Genero dos casos óbitos',
         "description": "A simple pie chart with labels.",
         "data": {
@@ -512,7 +512,7 @@ async function start_obitos() {
     let pieChart_data = faixa_etaria(selection_data_covid.filter((d) => d.IDADE));
     let chart_faixa_etaria = {
         width: "container",
-        height: 300,
+        height: "container",
         title: 'Faixa etária dos óbitos',
         data: {
             values: pieChart_data
