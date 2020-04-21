@@ -442,8 +442,8 @@ async function start_obitos() {
     vegaEmbed('#vis1', barchart);
 
     let stackedbarchart = {
+        height:500,
         title: 'Óbitos por município do Pará e forma de contaminação',
-        width: "container",
         data: {
             values: selection_data_covid
         },
@@ -617,6 +617,8 @@ async function counts_cases() {
     document.getElementById("number_deaths").appendChild(textdeath);
 }
 
+counts_cases();
+
 function faixa_etaria(data) {
     let faixa_etaria_data = [];
 
@@ -688,7 +690,6 @@ function remove_custon_tooltip() {
     elemet_4.remove();
 }
 
-counts_cases();
 start_confirm();
 
 
