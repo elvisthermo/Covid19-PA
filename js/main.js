@@ -10,6 +10,13 @@ async function read_death_cases() {
     return data_covid;
 }
 
+async function read_recovery_cases(){
+    const data_covid = await d3.csv("./datasets/mapeamento-casos-recuperados-no-para.csv");
+
+    return data_covid;
+
+}
+
 async function start_confirm(option) {
     let selection_data_covid = await read_confirmed_cases();
 
@@ -609,6 +616,11 @@ async function counts_cases() {
     let para_confirm_covid = await read_confirmed_cases();
 
     let para_death_covid = await read_death_cases();
+
+    let para_recovery_covid = await read_recovery_cases();
+
+    let textrecovery = document.createTextNode(para_recovery_covid[para_recovery_covid.length-1].QUANTIDADE);
+    document.getElementById("number_recovery").appendChild(textrecovery);
 
     let textcomfirm = document.createTextNode(para_confirm_covid.length);
     document.getElementById("number_comfirm").appendChild(textcomfirm);
