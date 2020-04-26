@@ -187,7 +187,7 @@ async function start_confirm(option) {
         }]
     };
 
-    vegaEmbed('#vis2', stackedbarchart);
+    // vegaEmbed('#vis2', stackedbarchart);
 
 
     let colors_genero = ["#0000ff", "#ff0000"];
@@ -483,7 +483,7 @@ async function start_obitos() {
         }]
     };
 
-    vegaEmbed('#vis2', stackedbarchart);
+    // vegaEmbed('#vis2', stackedbarchart);
 
 
     let colors_genero = ["#0000ff", "#ff0000"];
