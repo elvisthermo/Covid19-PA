@@ -483,7 +483,7 @@ async function start_obitos() {
         }]
     };
 
-    // vegaEmbed('#vis2', stackedbarchart);
+    // vegaEmbed('# ', stackedbarchart);
 
 
     let colors_genero = ["#0000ff", "#ff0000"];
